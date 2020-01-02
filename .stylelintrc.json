@@ -1,0 +1,26 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-rational-order"],
+  "plugins": ["stylelint-order", "stylelint-prettier", "stylelint-high-performance-animation"],
+  "rules": {
+    "prettier/prettier": true,
+    "plugin/no-low-performance-animation-properties": true,
+    "max-nesting-depth": 3,
+    "color-hex-case": "lower",
+
+    "block-no-empty": true,
+    "color-no-invalid-hex": true,
+    "comment-empty-line-before": [ "always", {
+      "ignore": ["stylelint-commands", "after-comment"]
+    } ],
+    "declaration-colon-space-after": "always",
+    "indentation": ["tab", {
+      "except": ["value"]
+    }],
+    "max-empty-lines": 1,
+    "rule-empty-line-before": [ "always", {
+      "except": ["first-nested"],
+      "ignore": ["after-comment"]
+    } ],
+    "unit-whitelist": ["em", "rem", "%", "s", "px", "PX"]
+  }
+}
