@@ -7,4 +7,3 @@ global.pathname = 'web_api/app/api/';
 
 global.TOAST_TIME = 1500;
 
-global.defaultLogo = `this.src="${require('@/assets/images/global_defaultavatar.png')}"`;

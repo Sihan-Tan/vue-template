@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <keep-alive :include="$store.state.keepAlivePages">
-      <router-view></router-view>
-    </keep-alive>
+    123456
   </div>
 </template>
 <script>

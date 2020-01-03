@@ -32,7 +32,10 @@ module.exports = {
             presets:[
               ['@babel/preset-env']
             ],
-            cacheDirectory: true
+            cacheDirectory: true,
+            plugins: [
+              '@babel/plugin-transform-runtime'
+            ]
           }
         }
       ],
