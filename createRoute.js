@@ -37,7 +37,7 @@ function generateRoute(routes, father = {}, level = 0) {
   const res = [];
   for (let ind = 0; ind < routes.length; ind += 1){
     const item = routes[ind];
-    if (item.children){
+    if (item.children && item.children.length){
       res.push(`
       {
           path: '${generatePath(item, level)}',

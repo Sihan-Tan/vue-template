@@ -1,6 +1,7 @@
 <template>
   <div>
     123456789
+    <p>{{show}}</p>
   </div>
 </template>
 <script>

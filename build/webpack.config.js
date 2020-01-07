@@ -29,14 +29,14 @@ module.exports = {
         {
           loader: 'babel-loader',
           options: {
-            // presets:[
-            //   ['@babel/preset-env']
-            // ],
-            cacheDirectory: true
-            // plugins: [
-            //   '@babel/plugin-syntax-dynamic-import',
-            //   '@babel/plugin-transform-runtime'
-            // ]
+            presets:[
+              ['@babel/preset-env']
+            ],
+            cacheDirectory: true,
+            plugins: [
+              '@babel/plugin-syntax-dynamic-import',
+              '@babel/plugin-transform-runtime'
+            ]
           }
         }
       ],
@@ -48,14 +48,14 @@ module.exports = {
       vue$: 'vue/dist/vue.runtime.esm.js',
       '@': resolve('src'),
       assets: resolve('src/assets'),
-      _c: resolve('src/components'),
-      views: resolve('src/views'),
-      pages: resolve('src/pages'),
-      config: resolve('src/config'),
-      api: resolve('src/api'),
-      mixin: resolve('src/mixin'),
-      store: resolve('src/store'),
-      utils: resolve('src/utils')
+      _c: resolve('src/components')
+      // views: resolve('src/views'),
+      // pages: resolve('src/pages'),
+      // config: resolve('src/config'),
+      // api: resolve('src/api'),
+      // mixin: resolve('src/mixin'),
+      // store: resolve('src/store'),
+      // utils: resolve('src/utils')
     },
     extensions: ['.js', '.json', '.vue']
   },

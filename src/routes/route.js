@@ -20,20 +20,6 @@ module.exports = [
         keepAlive: '',
         desc: ''
       }
-    },
-    {
-      path: 'son',
-      redirect: 'son/son',
-      children: [{
-        path: 'con',
-        name: 'back-son-con',
-        component: () => import(/* webpackChunkName: "back-son-con" */ '@/views/back/son/con.vue'),
-        meta: {
-          title: '',
-          keepAlive: '',
-          desc: ''
-        }
-      }]
     }]
   },
   {
