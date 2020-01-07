@@ -1,4 +1,5 @@
 import './waves.css';
+/* eslint-disable */
 /* 指令不适合本身有定位的元素 */
 export default {
   bind(el, binding) {

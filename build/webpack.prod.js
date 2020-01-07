@@ -15,11 +15,23 @@ module.exports = merge(baseConfig, {
     path: path.resolve(__dirname, '../dist'),
     publicPath: './'
   },
-  devtool: 'source-map',
+  devtool: 'cheap-module-source-map',
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../public/index.html')
+      template: path.resolve(__dirname, '../public/index.html'),
+      minify: {
+        removeComments: true,  
+        collapseWhitespace: true,  
+        removeRedundantAttributes: true,
+        useShortDoctype: true, 
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true, 
+        minifyJS: true,
+        minifyCSS: true, 
+        minifyURLs: true 
+      }
     }),
     new CopyWebpackPlugin([
       {

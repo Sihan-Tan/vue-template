@@ -50,7 +50,7 @@ module.exports = {
     // 块空格
     "space-before-blocks": ["error", { "functions": "always", "keywords": "never", "classes": "always" }],
     // 不允许改变参数
-    "no-param-reassign": "error",
+    // "no-param-reassign": "error",
     // 优先使用扩展运算符
     "prefer-spread": "error",
     // 箭头函数回调
@@ -115,7 +115,7 @@ module.exports = {
     // 在大括号内添加空格
     "object-curly-spacing": ["error", "always"],
     // 避免有超过100个字符
-    "max-len": ["error", { "code": 100 }],
+    "max-len": ["error", { "code": 150 }],
     // 逗号
     "comma-style": ["error", "last"],
     // 结尾的逗号

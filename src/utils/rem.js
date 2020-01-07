@@ -1,7 +1,7 @@
 // var designWidth = 375
 // var rem2px = 100
 // document.documentElement.style.fontSize = ((window.innerWidth / designWidth) * rem2px) + 'px'
-
+/* eslint-disable */
 function setrem(e, t) {
   function n() {
     t.body ? t.body.style.fontSize = `${12 * o}px` : t.addEventListener('DOMContentLoaded', n);

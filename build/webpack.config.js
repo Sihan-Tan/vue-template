@@ -2,7 +2,7 @@ const path = require('path');
 const HappyPack = require('happypack');
 const os = require('os');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const vueLoaderConfig = require('./vue-loader.config');
+const vueLoaderConfig = require('./vue-loader.config');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const devMode = process.env.NODE_ENV !== 'production';
 const happyThreadPool = HappyPack.ThreadPool({
@@ -14,7 +14,7 @@ console.log(process.env.NODE_ENV);
 
 module.exports = {
   entry: [
-    // '@babel/polyfill', 
+    '@babel/polyfill', 
     path.resolve(__dirname, '../src/main.js')
   ], // 入口文件
   plugins:[
@@ -29,13 +29,14 @@ module.exports = {
         {
           loader: 'babel-loader',
           options: {
-            presets:[
-              ['@babel/preset-env']
-            ],
-            cacheDirectory: true,
-            plugins: [
-              '@babel/plugin-transform-runtime'
-            ]
+            // presets:[
+            //   ['@babel/preset-env']
+            // ],
+            cacheDirectory: true
+            // plugins: [
+            //   '@babel/plugin-syntax-dynamic-import',
+            //   '@babel/plugin-transform-runtime'
+            // ]
           }
         }
       ],
@@ -150,8 +151,8 @@ module.exports = {
       {
         test: /\.vue$/i,
         exclude: /node_modules/,
-        loader: 'vue-loader'
-        // options: vueLoaderConfig
+        loader: 'vue-loader',
+        options: vueLoaderConfig
       },
       {
         test: /\.svg$/,

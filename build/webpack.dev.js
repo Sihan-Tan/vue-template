@@ -41,14 +41,15 @@ module.exports = merge(baseConfig, {
         exclude: /node_modules/,
         options: {
           formatter: require('eslint-friendly-formatter'),
-          emitWarning: true
+          emitWarning: true,
+          fix: true
         }
       }
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: resolve('public/index.html')
+      template: resolve('public/dev.html')
     }),
     new StyleLintPlugin({
       files: ['src/*.{vue,htm,html,css,sss,less,scss,sass}'],
