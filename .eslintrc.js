@@ -126,7 +126,7 @@ module.exports = {
     "no-new-wrappers": "error",
     radix: ["error", "as-needed"],
     // 命名
-    "id-length": ["error", { "min": 2 }],
+    "id-length": ["error", { "min": 3, "exceptions": ["x", "y", "i", "j", "id", "fs"] }],
     // 驼峰
     // "camelcase": ["error", {ignoreDestructuring: true}],
     // 当命名构造函数或类的时候使用 PascalCase 式命名
