@@ -42,10 +42,11 @@ function generateRoute(routes, father = {}, level = 0) {
       {
           path: '${generatePath(item, level)}',
           redirect: '${generateRedirect(item, level)}',
+          component: () => import(/* webpackChunkName: "${getName(item)}" */ '${getAliasPath(item)}/index.vue'),
           children: [${generateRoute(item.children, item, level + 1)}]
       }`);
     } 
-    if (item.path.includes('.vue')){
+    if (item.path.includes('.vue') && item.path !== 'index.vue'){
       res.push(`{
         path: '${generatePath(item, level)}',
         name: '${getName(item)}',
@@ -116,17 +117,13 @@ function getDesc({ path }) {
 
 // 将全路径转为别名路径
 function getAliasPath({ fullPath }) {
-  if (!fullPath.includes('.vue')){
-    return false;
-  }
   return fullPath.replace(/\\/g, '/').replace('src', '@');
 }
 
 // 生成path
 function generatePath(item, level) {
-  let path = getID(item) ? `${getPath(item)}/:${getID(item)}` : getPath(item);
-  path = level ? path : `/${path}`;
-  return path;
+  const path = getID(item) ? `${getPath(item)}/:${getID(item)}` : getPath(item);
+  return level ? path : `/${path}`;
 }
 
 // 生成重定向
