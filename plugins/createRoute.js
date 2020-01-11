@@ -14,7 +14,14 @@ const defaultOptions = {
   },
   queue: ['path', 'id', 'title', 'keepAlive', 'desc'],
   ext: '.vue', // 文件后缀
-  alias: true // 是否使用别名
+  alias: true, // 是否使用别名
+  fatherLevel: 1, // 需要出几层目录, 0 表示当前目录
+  template: `
+  <template>
+    <div>
+      <router-view></router-view>
+    </div>
+  </template>` // 容器文件模板
 };
 
 class CreateRoutePlugin {
@@ -23,34 +30,41 @@ class CreateRoutePlugin {
   }
 
   apply(compiler) {
-    const routeString = this.generateRouteString();
-    const { output } = this.options;
     compiler.hooks.emit.tapAsync(pluginName, (compilation, callback) => {
-      fs.writeFileSync(`${output.path}/${output.file}`, routeString, (err, data) => {
-        if (err){
-          console.log(err);
-        } else {
-          console.log(data);
-        }
-      });
+      this.writeStringToFile();
       callback();
     });
+  }
+
+  // 写入文件
+  writeStringToFile() {
+    const routeString = this.generateRouteString();
+    const { output } = this.options;
+    fs.writeFileSync(`${output.path}/${output.file}`, routeString, (err, data) => {
+      if (err){
+        console.log(err);
+      } else {
+        console.log(data);
+      }
+    });
+    console.log('done: 路由自动生成');
   }
 
   // 返回路由字符串
   generateRouteString() {
     const dir = this.options.dirName;
     const filesList = this.readFileList(dir);
-    console.log(filesList);
     return `module.exports = [${this.generateRoute(filesList)}]`;
   }
 
   // 生成路由字符串
   generateRoute(routes, father = {}, level = 0) {
     const res = [];
+    const title = this.options.queue[2], keepAlive = this.options.queue[3], desc = this.options.queue[4];
     for (let ind = 0; ind < routes.length; ind += 1){
       const item = routes[ind];
       if (item.children && item.children.length){
+        this.generateRouteView(path.resolve(item.fullPath, '.', this.options.routerViewName));
         res.push(`
         {
             path: '${this.generatePath(item, level)}',
@@ -59,15 +73,18 @@ class CreateRoutePlugin {
             children: [${this.generateRoute(item.children, item, level + 1)}]
         }`);
       } 
-      if (item.path.includes('.vue') && item.path !== this.options.routerViewName){
+      if (item.path.includes(this.options.ext) && item.path !== this.options.routerViewName){
+        if (item.path === this.options.routerViewName){
+          this.generateRouteView(path.resolve(item.fullPath, '.', this.options.routerViewName));
+        }
         res.push(`{
           path: '${this.generatePath(item, level)}',
           name: '${this.getName(item)}',
           component: () => import(/* webpackChunkName: "${this.getName(item)}" */ '${this.getAliasPath(item)}'),
           meta: {
-              title: '${this.getTitle(item) || ''}',
-              keepAlive: '${this.getKeep(item) || ''}',
-              desc: '${this.getDesc(item) || ''}'
+              ${title}: '${this.getTitle(item) || ''}',
+              ${keepAlive}: '${this.getKeep(item) || ''}',
+              ${desc}: '${this.getDesc(item) || ''}'
           }
         }`);
       } 
@@ -79,30 +96,13 @@ class CreateRoutePlugin {
   // 获取文件列表
   readFileList() {
     const dir = this.options.dirName;
-    const files = fs.readdirSync(dir);
-    return files.map((item, index) => {
-      const fullPath = path.join(dir, item);
-      const stat = fs.statSync(fullPath);
-      if (stat.isDirectory()){
-        return {
-          path: item,
-          name: item,
-          fullPath,
-          children: this.readFileList(path.join(dir, item))
-        }; // 递归读取文件
-      }
-      return {
-        path: item,
-        name: item,
-        fullPath
-      };
-    });
+    return getFileList(dir);
   }
 
   // 从文件名获取参数
   getParams(path) {
     const extIndex = path.indexOf(this.options.ext);
-    let fileName = path;
+    let fileName = path.replace(this.options.dirName, '');
     if (extIndex > -1){
       fileName = path.slice(0, extIndex);
     }
@@ -121,10 +121,13 @@ class CreateRoutePlugin {
 
   // 获取name
   getName({ fullPath }) {
-    return fullPath.replace(/\\/g, '/').replace(`${this.options.dirName}/`, '')
+    const reg = new RegExp(`_.*${this.options.ext}$`);
+    return fullPath.replace(resolve(this.options.dirName, '.'), '')
+      .replace(/\\/g, '/')
       .replace(/\//g, '-')
-      .replace(/_.*\.vue$/, '')
-      .replace(/\.vue$/, '');
+      .slice(1)
+      .replace(reg, '')
+      .replace(new RegExp(this.options.ext), '');
   }
 
   // 获取id
@@ -149,8 +152,10 @@ class CreateRoutePlugin {
 
   // 将全路径转为别名路径
   getAliasPath({ fullPath }) {
-    const path = fullPath.replace(/\\/g, '/');
-    return this.options.alias ? path.replace('src', '@') : path;
+    const path = fullPath.replace(/\\/g, '/').slice(fullPath.indexOf('src'));
+    let noAliasPath = path.replace(/src[\\|\/]/, '');
+    noAliasPath = this.options.fatherLevel ? '../'.repeat(this.options.fatherLevel) + noAliasPath : `./${noAliasPath}`;
+    return this.options.alias ? path.replace('src', '@') : noAliasPath;
   }
 
   // 生成path
@@ -163,6 +168,38 @@ class CreateRoutePlugin {
   generateRedirect(item, level) {
     return `${this.generatePath(item, level)}/${this.getPath(item)}`;
   }
+
+  // 生成容器文件
+  generateRouteView(file) {
+    const { template } = this.options;
+    fs.stat(file, (err) => {
+      if (err){
+        fs.writeFileAsync(file, template);
+      }
+    });
+  }
+}
+
+// 获取文件列表
+function getFileList(dir) {
+  const files = fs.readdirSync(dir);
+  return files.map((item, index) => {
+    const fullPath = path.join(dir, item);
+    const stat = fs.statSync(fullPath);
+    if (stat.isDirectory()){
+      return {
+        path: item,
+        name: item,
+        fullPath,
+        children: getFileList(path.join(dir, item))
+      }; // 递归读取文件
+    }
+    return {
+      path: item,
+      name: item,
+      fullPath
+    };
+  });
 }
 
 module.exports = CreateRoutePlugin;

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-// const routes = require('./route');
+const routes = require('./route');
 Vue.use(Router);
 
 const router = new Router({
@@ -16,7 +16,7 @@ const router = new Router({
     return { x: 0, y: to.meta.savedPosition || 0 };
     
   },
-  routes: []
+  routes: [... routes]
 });
 
 export default router;

@@ -6,7 +6,7 @@ const merge = require('webpack-merge');
 const defaultOptions = {
   methods: ['get', 'post'],
   split: '--',
-  output: path.resolve(__dirname, '.', 'src/api')
+  output: path.resolve(__dirname, '..', 'src/api')
 };
 
 class AutoCreateApi {
@@ -20,6 +20,10 @@ class AutoCreateApi {
       this.writeFileText();
       callback();
     });
+    // compiler.hooks.run.tapPromise(pluginName, async (compilation, callback) => {
+    //   await new Promise(() => this.writeFileText());
+    //   callback();
+    // });
   }
 
   // 写入文件
@@ -28,10 +32,11 @@ class AutoCreateApi {
     const defaultPath = this.options.output;
     for (let i = 0; i < files.length; i += 1){
       const dirName = files[i];
-      fs.writeFileSync(`${defaultPath}/${dirName}.js`, this.generateText(dirName, this.apiConfig), (err, data) => {
+      fs.writeFileSync(path.resolve(defaultPath, '.', `${dirName}.js`), this.generateText(dirName, this.apiConfig), (err, data) => {
         console.log(err, data);
       });
     }
+    console.log('done: 接口自动生成完成');
   }
 
   // 生成文本串
