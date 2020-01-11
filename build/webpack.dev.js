@@ -3,8 +3,12 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const baseConfig = require('./webpack.config.js');
+// const CreateRoutePlugin = require('../plugins/createRoute.js');
+const AutoCreateApi = require('../plugins/createApi');
 const merge = require('webpack-merge');
 const resolve = dir => path.resolve(__dirname, '..', dir);
+
+const apiConfig = require('../api.config');
 
 module.exports = merge(baseConfig, {
   mode: 'development',
@@ -50,6 +54,10 @@ module.exports = merge(baseConfig, {
   plugins: [
     new HtmlWebpackPlugin({
       template: resolve('public/dev.html')
+    }),
+    // new CreateRoutePlugin(),
+    new AutoCreateApi(apiConfig, {
+      // output: resolve('src/api')
     }),
     new StyleLintPlugin({
       files: ['src/*.{vue,htm,html,css,sss,less,scss,sass}'],
