@@ -48,10 +48,6 @@ service.interceptors.response.use(
   }
 );
 function http({ url = '', method = 'get', params = {}, data = {}, type = '' }) {
-  if (type === 'uploadImg'){
-    // 上传图片专用请求
-    return uploadImg({ url, params, file: data.file });
-  } 
   data = qs.stringify(data);
   return service({
     url,
@@ -61,23 +57,6 @@ function http({ url = '', method = 'get', params = {}, data = {}, type = '' }) {
   }).then(res => {
     return res.data;
   });
-  
-}
-function uploadImg({ url, params = {}, file }) {
-  const data = new FormData();
-  data.append('userfield', file);
-  return service({
-    url,
-    method: 'post',
-    data,
-    params
-  })
-    .then(res => {
-      return res.data;
-    })
-    .catch(res => {
-      console.log(res);
-    });
 }
 
 export default http;
