@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports = {
   root: true,
   env: {
@@ -103,7 +104,7 @@ module.exports = {
     "keyword-spacing": ["error", { "before": true }],
     // 使用空格把运算符隔开
     "space-infix-ops": ["error", { "int32Hint": false }],
-    "eol-last": ["error", "always"],
+    // "eol-last": ["error", "never"],
     // 链式调用方法换行
     "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 2 }],
     // 不要用空白行
@@ -126,7 +127,7 @@ module.exports = {
     "no-new-wrappers": "error",
     radix: ["error", "as-needed"],
     // 命名
-    "id-length": ["error", { "min": 3, "exceptions": ["x", "y", "i", "j", "id", "fs", "to", "qs", "el"] }],
+    "id-length": ["error", { "min": 3, "exceptions": ["x", "y", "i", "j", "id", "fs", "to", "qs", "el", "_c", "os"] }],
     // 驼峰
     // "camelcase": ["error", {ignoreDestructuring: true}],
     // 当命名构造函数或类的时候使用 PascalCase 式命名

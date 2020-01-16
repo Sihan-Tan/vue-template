@@ -13,6 +13,9 @@ const apiConfig = require('../api.config');
 module.exports = merge(baseConfig, {
   mode: 'development',
   devtool: 'cheap-module-eval-source-map',
+  watchOptions: {
+    ignored: [resolve('src/routes/route'), resolve('src/api')]
+  },
   devServer: {
     contentBase: '..',
     port: 9999, // 端口
@@ -33,6 +36,9 @@ module.exports = merge(baseConfig, {
           '/api': ''
         }
       }
+    },
+    watchOptions: {
+      ignored: [resolve('src/routes/route'), resolve('src/api')]
     }
   },
   module: {
@@ -42,7 +48,7 @@ module.exports = merge(baseConfig, {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
         include: [resolve('src')],
-        exclude: /node_modules/,
+        exclude: [/node_modules/, resolve('src/api'), resolve('src/routes/route')],
         options: {
           formatter: require('eslint-friendly-formatter'),
           emitWarning: true,
@@ -58,7 +64,7 @@ module.exports = merge(baseConfig, {
     new CreateRoutePlugin({
       alias: false
     }),
-    new AutoCreateApi(apiConfig, {}),
+    // new AutoCreateApi(apiConfig, {}),
     new StyleLintPlugin({
       files: ['src/*.{vue,htm,html,css,sss,less,scss,sass}'],
       fix: true,
