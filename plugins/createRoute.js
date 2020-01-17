@@ -30,7 +30,12 @@ class CreateRoutePlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.emit.tapAsync(pluginName, (compilation, callback) => {
+    // compiler.hooks.emit.tapAsync(pluginName, (compilation, callback) => {
+    //   this.writeStringToFile();
+    //   callback();
+    // });
+    console.log(compiler.hooks.beforeCompile);
+    compiler.hooks.beforeCompile.tapAsync(pluginName, (compilation, callback) => {
       this.writeStringToFile();
       callback();
     });
@@ -174,7 +179,7 @@ class CreateRoutePlugin {
     const { template } = this.options;
     fs.stat(file, (err) => {
       if (err){
-        fs.writeFileAsync(file, template);
+        fs.writeFileSync(file, template);
       }
     });
   }

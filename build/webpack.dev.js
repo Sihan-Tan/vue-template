@@ -14,13 +14,12 @@ module.exports = merge(baseConfig, {
   mode: 'development',
   devtool: 'cheap-module-eval-source-map',
   watchOptions: {
-    ignored: [resolve('src/routes/route'), resolve('src/api')]
+    ignored: [/src\\routes\\route/, /src\\api/]
   },
   devServer: {
     contentBase: '..',
     port: 9999, // 端口
     hot: true, // 热更新
-    historyApiFallback: true, // 页面不存在时的404
     host: 'localhost', // 主机
     inline: true,
     open: false,
@@ -38,7 +37,7 @@ module.exports = merge(baseConfig, {
       }
     },
     watchOptions: {
-      ignored: [resolve('src/routes/route'), resolve('src/api')]
+      ignored: [/src\\routes\\route/, /src\\api/]
     }
   },
   module: {
@@ -48,7 +47,8 @@ module.exports = merge(baseConfig, {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
         include: [resolve('src')],
-        exclude: [/node_modules/, resolve('src/api'), resolve('src/routes/route')],
+        // exclude: [/node_modules/, resolve('src/api'), resolve('src/routes/route')],
+        exclude: [/node_modules/],
         options: {
           formatter: require('eslint-friendly-formatter'),
           emitWarning: true,
@@ -61,10 +61,10 @@ module.exports = merge(baseConfig, {
     new HtmlWebpackPlugin({
       template: resolve('public/dev.html')
     }),
-    new CreateRoutePlugin({
-      alias: false
-    }),
-    // new AutoCreateApi(apiConfig, {}),
+    // new CreateRoutePlugin({
+    //   alias: false
+    // }),
+    new AutoCreateApi(apiConfig, {}),
     new StyleLintPlugin({
       files: ['src/*.{vue,htm,html,css,sss,less,scss,sass}'],
       fix: true,

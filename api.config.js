@@ -8,6 +8,6 @@ module.exports = {
   },
   user: {
     get: ['user', 'token'],
-    post: ['password']
+    post: ['password', 'userInfo']
   }
 };

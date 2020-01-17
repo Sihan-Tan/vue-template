@@ -82,7 +82,7 @@ module.exports = {
     // 变量链式赋值
     "no-multi-assign": "error",
     // 避免递增递减
-    "no-plusplus": "error",
+    // "no-plusplus": "error",
     // 等号
     "eqeqeq": ["error", "smart"],
     // case, default
