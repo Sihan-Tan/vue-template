@@ -16,14 +16,14 @@ class AutoCreateApi {
   }
 
   apply(compiler) {
-    compiler.hooks.emit.tapAsync(pluginName, (compilation, callback) => {
+    // compiler.hooks.emit.tapAsync(pluginName, (compilation, callback) => {
+    //   this.writeFileText();
+    //   callback();
+    // });
+    compiler.hooks.beforeCompile.tapAsync(pluginName, (compilation, callback) => {
       this.writeFileText();
       callback();
     });
-    // compiler.hooks.run.tapPromise(pluginName, async (compilation, callback) => {
-    //   await new Promise(() => this.writeFileText());
-    //   callback();
-    // });
   }
 
   // 写入文件

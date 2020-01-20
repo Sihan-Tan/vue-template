@@ -47,7 +47,7 @@ module.exports = merge(baseConfig, {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
         include: [resolve('src')],
-        // exclude: [/node_modules/, resolve('src/api'), resolve('src/routes/route')],
+        exclude: [/node_modules/, resolve('src/api'), resolve('src/routes/route')],
         exclude: [/node_modules/],
         options: {
           formatter: require('eslint-friendly-formatter'),

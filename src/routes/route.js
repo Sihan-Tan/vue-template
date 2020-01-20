@@ -36,9 +36,9 @@ module.exports = [
           desc: ''
         }
       },{
-        path: 'index',
-        name: 'back-son-index',
-        component: () => import(/* webpackChunkName: "back-son-index" */ '../views/back/son/index.vue'),
+        path: 'sdgsdfg',
+        name: 'back-son-sdgsdfg',
+        component: () => import(/* webpackChunkName: "back-son-sdgsdfg" */ '../views/back/son/sdgsdfg.vue'),
         meta: {
           title: '',
           keepAlive: '',

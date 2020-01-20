@@ -23,3 +23,11 @@ export function password(data) {
     data
   });
 }
+    
+export function userInfo(data) {
+  return http({
+    url: '/user/userInfo',
+    method: 'post',
+    data
+  });
+}

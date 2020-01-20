@@ -34,8 +34,7 @@ class CreateRoutePlugin {
     //   this.writeStringToFile();
     //   callback();
     // });
-    console.log(compiler.hooks.beforeCompile);
-    compiler.hooks.beforeCompile.tapAsync(pluginName, (compilation, callback) => {
+    compiler.hooks.done.tapAsync(pluginName, (compilation, callback) => {
       this.writeStringToFile();
       callback();
     });
